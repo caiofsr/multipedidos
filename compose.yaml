@@ -6,4 +6,24 @@ services:
       - 3000:3000
     volumes:
       - .:/home/node/app
+    depends_on:
+      - mysql
+    networks:
+      - multipedidos
 
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=multipedidos
+    ports:
+      - 3306:3306
+    networks:
+      - multipedidos
+
+volumes:
+  mysql_data:
+
+networks:
+  multipedidos:
+    driver: bridge
