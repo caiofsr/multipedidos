@@ -59,7 +59,8 @@
 				"humao.rest-client",
 				"orta.vscode-jest",
 				"firsttris.vscode-jest-runner",
-				"AMiner.codegeex"
+				"AMiner.codegeex",
+				"andrejunges.Handlebars"
 			]
 		}
 	}
