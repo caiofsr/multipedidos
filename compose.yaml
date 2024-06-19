@@ -1,15 +1,15 @@
 services:
-  app:
-    build: .
-    command: ./.docker/start.sh
-    ports:
-      - 3000:3000
-    volumes:
-      - .:/home/node/app
-    depends_on:
-      - mysql
-    networks:
-      - multipedidos
+  # app:
+  #   build: .
+  #   command: ./.docker/start.sh
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - .:/home/node/app
+  #   depends_on:
+  #     - mysql
+  #   networks:
+  #     - multipedidos
 
   mysql:
     image: mysql
