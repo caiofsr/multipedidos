@@ -3,20 +3,29 @@
 
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Socket.IO chat</title>
+  <title>Balança Digital</title>
   <style>
     body {
       margin: 0;
       padding-bottom: 3rem;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background: #f8f8f8;
+      overflow: hidden;
     }
   </style>
 </head>
 
 <body>
-  <h1>Peso da Balança</h1>
-  <h2>0</h2><p>Kg</p>
-  <button >Salvar no banco</button>
+  <div class="container">
+    <h1>Peso da balança</h1>
+    <h2>0 Kg</h2>
+    <button>Salvar no banco</button>
+  </div>
 </body>
 
 </html>
@@ -24,14 +33,28 @@
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script>
   const socket = io();
-  let weight
+
+  let weight;
 
   socket.on('scale', (data) => {
-    weight = Number(data);
-    document.querySelector('h2').innerText = data;
-  })
+    const parsedWeight = Number(data);
+    if (isNaN(parsedWeight)) {
+      console.error('Peso inválido recebido do servidor!');
+      return;
+    }
+    weight = parsedWeight;
+    document.querySelector('h2').innerText = formatWeight(weight);
+  });
 
   document.querySelector('button').addEventListener('click', () => {
+    if (weight === undefined) {
+      alert('Ainda não há peso registrado!');
+      return;
+    }
     socket.emit('store-weight', weight);
-  })
+  });
+
+  function formatWeight(weight) {
+    return `${weight}Kg`;
+  }
 </script>
