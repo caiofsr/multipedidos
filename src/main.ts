@@ -1,6 +1,7 @@
 import { join } from 'node:path';
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
+import { ScaleGateway } from './scale/scale.gateway';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
@@ -11,5 +12,8 @@ async function bootstrap() {
   app.setViewEngine('hbs');
 
   await app.listen(3000);
+
+  const scaleGateway = app.get(ScaleGateway);
+  scaleGateway.sendWeight();
 }
 bootstrap();

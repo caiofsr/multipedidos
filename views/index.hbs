@@ -15,8 +15,8 @@
 
 <body>
   <h1>Peso da Balança</h1>
-  <h2>124</h2>
-  <button>Salvar no banco</button>
+  <h2>0</h2><p>Kg</p>
+  <button >Salvar no banco</button>
 </body>
 
 </html>
@@ -24,4 +24,14 @@
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script>
   const socket = io();
+  let weight
+
+  socket.on('scale', (data) => {
+    weight = Number(data);
+    document.querySelector('h2').innerText = data;
+  })
+
+  document.querySelector('button').addEventListener('click', () => {
+    socket.emit('store-weight', weight);
+  })
 </script>
