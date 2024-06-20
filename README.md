@@ -1,73 +1,72 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Descrição
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Desafio técnico para a entrevista de emprego da multipedidos
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tecnologias Utilizada
+- Node.js
+- NestJS
+- Prisma
+- Websocket
+- Docker
 
-## Description
+## Instalação de dependências
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+> [!IMPORTANT]
+> Devido as portas COM não serem virtualizadas dentro do container e wsl é necessário rodar o Node.js na sua maquina.
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+## Inicializando a aplicação
+
+Primeiro você deve criar o arquivo `.env` com o seguinte comando. Já está disponível a variável e não precisa alterar mais nada dentro do arquivo.
+```bash
+cp .env.example .env
+```
+
+Após isso você deve iniciar o banco mysql com o docker.
+```bash
+$ docker-compose up -d
+```
+
+Após isso você deve rodar o seguinte comando para rodar as migrations.
+```bash
+$ npx prisma migrate dev
+```
+
+Agora você pode iniciar a aplicação com o seguinte comando.
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
+# desenvolvimento
 $ npm run start:dev
 
-# production mode
+# produção
 $ npm run start:prod
 ```
 
-## Test
+Aplicação está rodando na porta 3000.
 
-```bash
-# unit tests
-$ npm run test
+## Teste
 
-# e2e tests
-$ npm run test:e2e
+Para fazer o teste da porta serial você irá precisar de dois programas o [Virtual Serial Ports](https://freevirtualserialports.com) e o [COM Port Data Emulator](https://www.aggsoft.com/com-port-emulator/download.htm).
 
-# test coverage
-$ npm run test:cov
-```
+### Virtual Serial Ports
 
-## Support
+Abra o programa e crie um ponte local com as portas desejadas.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### COM Port Data Emulator
 
-## Stay in touch
+Para configurar o program siga os passos:
+- Escolha uma das portas quem foi emulada no Virtual Serial Ports
+- Depois vá para a aba `Data source` e escolha a `data source` como `Text strings`, no campo abaixo será os dados que serão enviado para a porta serial.
+- Selecione o `Repeat mode` e escolha o tempo de intervalo para o envio dos dados.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Agora você pode enviar dados para a porta serial, clicando no botão `Start no final do programa`.
 
-## License
+### Programa completo
 
-Nest is [MIT licensed](LICENSE).
+Acesse o endereço http://localhost:3000, ira renderizar uma pagina com os dados da porta serial. Se quiser alterar o peso que aparece na pagina vá no COM Port Data Emulator e mude o valor que ira atualizar de acordo com o tempo de intervalo escolhido.
+
+Para salvar os dados você pode clicar no botão `Salvar no banco` e o peso será salvo no banco de dados.
+
