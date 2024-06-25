@@ -14,7 +14,19 @@ datasource db {
 }
 
 model Measurement {
-  id        Int      @id @default(autoincrement())
-  weight    Float
-  timestamp DateTime @default(now())
+  id         Int       @id @default(autoincrement())
+  weight     Float
+  timestamp  DateTime  @default(now())
+  supplierId Int?      @map("supplier_id")
+  supplier   Supplier? @relation(fields: [supplierId], references: [id])
+
+  @@map("measurements")
+}
+
+model Supplier {
+  id           Int           @id @default(autoincrement())
+  name         String
+  measurements Measurement[]
+
+  @@map("suppliers")
 }
