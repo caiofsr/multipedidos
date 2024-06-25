@@ -23,7 +23,8 @@
 <body>
   <div class="container">
     <h1>Peso da balança</h1>
-    <h2>0 Kg</h2>
+    <h2>0Kg</h2>
+    <select id="suppliers"></select>
     <button>Salvar no banco</button>
   </div>
 </body>
@@ -33,6 +34,7 @@
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script>
   const socket = io();
+  const suppliersSelect = document.getElementById('suppliers');
 
   let weight;
 
@@ -51,10 +53,38 @@
       alert('Ainda não há peso registrado!');
       return;
     }
-    socket.emit('store-weight', weight);
+
+    if (suppliersSelect.value === '') {
+      alert('Selecione um fornecedor!');
+      return;
+    }
+
+    const wsMessage = {
+      weight,
+      supplierId: parseInt(suppliersSelect.value)
+    }
+
+    socket.emit('store-weight', wsMessage);
   });
 
   function formatWeight(weight) {
     return `${weight}Kg`;
   }
+
+  function fetchSuppliers() {
+    fetch('/suppliers')
+      .then(response => response.json())
+      .then(suppliers => {
+        suppliers.forEach(supplier => {
+          const option = document.createElement('option');
+          option.value = supplier.id;
+          option.text = supplier.name;
+          suppliersSelect.appendChild(option);
+        });
+      })
+      .catch(error => console.error(error));
+  }
+
+  fetchSuppliers();
+
 </script>

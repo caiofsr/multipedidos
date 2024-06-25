@@ -8,6 +8,7 @@ import {
 import { SerialHandlerService } from 'src/serial/serial-handler.service';
 import { PrismaService } from 'src/prisma.service';
 import { Logger } from '@nestjs/common';
+import { StoreWeightDto } from './dto/store.dto';
 
 @WebSocketGateway()
 export class ScaleGateway {
@@ -27,11 +28,16 @@ export class ScaleGateway {
   }
 
   @SubscribeMessage('store-weight')
-  async handleStoreWeight(@MessageBody() weight: number) {
+  async handleStoreWeight(
+    @MessageBody() { weight, supplierId }: StoreWeightDto,
+  ) {
     const measurement = await this.prismaService.measurement.create({
-      data: { weight },
+      data: { weight, supplierId },
     });
 
-    this.logger.log(`Saved weight: ${measurement.weight}Kg`, 'PrismaService');
+    this.logger.log(
+      `Saved weight: ${measurement.weight}Kg for supplier id: ${supplierId}`,
+      'PrismaService',
+    );
   }
 }
